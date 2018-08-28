@@ -1,6 +1,12 @@
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
+
+
+const express = require('express')
+const path = require('path')
+const PORT = process.env.PORT || 5000
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -44,3 +50,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
          }
      }
 });
+
+
+express()
+  .listen(process.env.PORT || 5000, () => console.log(`Listening on ${ PORT }`))
