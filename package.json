@@ -11,8 +11,10 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "ejs": "^2.5.6",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "request": "^2.81.0",
