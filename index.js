@@ -38,7 +38,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     to: channelID,
                     message: 'Pong!'
                 });
-				
+			break;
+			
 		    case 'intro':
 				bot.sendMessage({
                     to: channelID,
