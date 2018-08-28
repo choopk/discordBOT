@@ -17,8 +17,9 @@ logger.level = 'debug';
 // Initialize Discord Bot
 client.login(config.token);
 
-const prefix = "!";
+//const prefix = "!";
 client.on("message", (message) => {
+  /*
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   if (message.content.startsWith(prefix + "Bing")) {
     message.channel.send("pong!");
@@ -26,7 +27,15 @@ client.on("message", (message) => {
   if (message.content.startsWith(prefix + "foo")) {
     message.channel.send("bar!");
   }
+*/
 
+if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+if (message.content.startsWith(config.prefix + "Bing")) {
+  message.channel.send("pong!");
+} else
+if (message.content.startsWith(config.prefix + "foo")) {
+  message.channel.send("bar!");
+}
   if(message.content.startsWith(config.prefix + "prefix")) {
     // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
