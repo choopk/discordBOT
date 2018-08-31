@@ -7,8 +7,8 @@ const config = require("./config.json");
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
-const randomCat = require("./randomcat.js");
-console.log( randomCat() );
+
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
