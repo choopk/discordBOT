@@ -32,7 +32,7 @@ client.on("message", (message) => {
 
 if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 if (message.content.startsWith(config.prefix + "ping")) {
-  message.channel.send("pong!");
+  message.channel.send("pong pong!");
 } else
 if (message.content.startsWith(config.prefix + "foo")) {
   message.channel.send("bar!");
