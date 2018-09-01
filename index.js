@@ -1,14 +1,11 @@
 const Discord = require("discord.js");
-
-const client = new Discord.Client();
+const bot = new Discord.Client({disableEveryone: true});
 var logger = require('winston');
 const fs = require("fs")
 const config = require("./config.json");
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
-
-
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -17,19 +14,20 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 
-client.on("ready", async () => {
-  console.log(`${client.user.username} is online!`);
+bot.on("ready", async () => {
+  console.log(`${bot.user.username} is online!`);
   //waifu Activity
-  client.user.setActivity("Husbando Games");
+ // bot.user.setActivity("Husbando Games");
+  bot.user.setActivity("boku no pico", {type:"WATCHING"});
 });
 
 // Initialize Discord Bot
-client.login(config.token);
+bot.login(config.token);
 
 //const prefix = "!";
 
 
-client.on("message", async (message) => {
+bot.on("message", async (message) => {
 
 /*
 show channel type
@@ -51,7 +49,7 @@ if (cmd === `${prefix}ping`) {
 } else
 if (cmd === `${prefix}pretty`) {
   //send waifuBot Avatar
-  message.channel.send(client.user.avatarURL);
+  message.channel.send(bot.user.avatarURL);
 }else
 if (message.content.startsWith(prefix + "OwO")) {
   //send embedded messages
@@ -85,6 +83,70 @@ if (cmd === `${prefix}mavatar`) {
   embed.setImage(user.displayAvatarURL)
   embed.setColor('#275BF0')
   message.channel.send(embed)
+}else//Display bot info
+if (cmd === `${prefix}botinfo`) {
+ let bicon = bot.user.displayAvatarURL;
+ let botembed = new Discord.RichEmbed()
+ .setDescription("Bot Information")
+ .setColor("#15f153")
+ .setThumbnail(bicon)
+ .setTimestamp(message.createdAt)
+ .addField("Bot Name", bot.user.username)
+ .addField('Created On',bot.user.createdAt);
+ return message.channel.send(botembed);
+}else if(cmd === `${prefix}serverinfo`){ //Display server info
+  let sicon = message.guild.displayAvatarURL;
+  let serverembed = new Discord.RichEmbed()
+  .setDescription("Server Information")
+  .setColor("#15f153")
+  .setThumbnail(sicon)
+  .addField("Server name", message.guild.name)
+  .addField("Created On", message.guild.createdAt)
+  .addField("You joined", message.member.joinedAt)
+  .addField("Total Members", message.guild.memberCount);
+  return message.channel.send(serverembed);
+}else// report users
+if (cmd === `${prefix}report`) {
+  let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(arg1[0]));
+  if(!rUser) return message.channel.send("Couldn't find user.");
+  let reason = arg1.join(" ").slice(22);
+
+  let reportEmbed = new Discord.RichEmbed()
+  .setDescription("Reports")
+  .setColor("#15f153")
+  .addField("Reported User",`${rUser} wtih ID: ${rUser.id}`)
+  .addField("Reported By",`${message.author} wtih ID: ${message.author.id}`)
+  .addField("Channel",message.channel)
+  .addField("Time",message.channel)
+  .addField("Time",message.channel)
+  .addField("Reason",reason);
+
+  let reportschannel = message.guild.channels.find(`name`,"reports");
+  if(!reportschannel) return message.channel.send("Couldn't find reports channel");
+
+  message.delete().catch(O_o=>{});
+  reportschannel.send(reportEmbed);
+  return;
+}else
+if(cmd === `${prefix}kick`){
+  let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(arg1[0]));
+  if(!kUser) return message.channel.send("Can't find uesr");
+  let kReason = arg1.join(" ").slice(22);
+  if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Nope");
+  if(kUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked");
+  let kickEmbed = new Discord.RichEmbed()
+  .setDescription("~Kick~")
+  .setColor("#e56b00")
+  .addField("Kicked User", `${kUser} with ID ${kUser.ud}`)
+  .addField("KickedBy", `<@${message.author.id}> with ID ${message.author.id}`)
+  .addField("Kicked In", message.channel)
+  .addField("Time", message.createdAt)
+  .addField("Reason", kReason);
+
+  let kickChannel = message.guild.channels.find(`name`, "incidents");
+  if(!kickChannel) return message.channel.send("Can't find incidents channel.");
+  message.guild.member(kUser).kick(kReason);
+  kickChannel.send(kickEmbed);
 }
 
 
