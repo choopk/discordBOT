@@ -1,12 +1,13 @@
 const Discord = require("discord.js");
+
 const client = new Discord.Client();
 var logger = require('winston');
-//var auth = require('./auth.json');
 const fs = require("fs")
 const config = require("./config.json");
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
+
 
 
 // Configure logger settings
@@ -15,29 +16,51 @@ logger.add(new logger.transports.Console, {
     colorize: true
 });
 logger.level = 'debug';
+
+client.on("ready", () => {
+  console.log("I am ready!");
+
+});
+
 // Initialize Discord Bot
 client.login(config.token);
 
 //const prefix = "!";
+
+
 client.on("message", (message) => {
-  /*
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-  if (message.content.startsWith(prefix + "Bing")) {
-    message.channel.send("pong!");
-  } else
-  if (message.content.startsWith(prefix + "foo")) {
-    message.channel.send("bar!");
-  }
-*/
+
+/*
+show channel type
+console.log(message.channel.type);
+show channel name
+console.log(message.channel.name);
+ */
+
 
 if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 if (message.content.startsWith(config.prefix + "ping")) {
   message.channel.send("pong pong!");
+  console.log(message.channel.type);
 } else
-if (message.content.startsWith(config.prefix + "foo")) {
-  message.channel.send("bar!");
+if (message.content.startsWith(config.prefix + "pretty")) {
+  //send waifuBot Avatar
+  message.channel.send(client.user.avatarURL);
+}else
+if (message.content.startsWith(config.prefix + "OwO")) {
+  //send embedded messages
+  message.channel.send({embed: {
+    color: 3447003,
+    description: "OwO!"
+  }});
+}else
+if (message.content.startsWith(config.prefix + "avatar")) {
+  //send own Avatar
+  let embed = new Discord.RichEmbed()
+  embed.setImage(message.author.avatarURL)
+  embed.setColor('#275BF0')
+  message.channel.send(embed)
 }
-  
 if(message.content.startsWith(config.prefix + "prefix")) {
     // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
@@ -46,6 +69,16 @@ if(message.content.startsWith(config.prefix + "prefix")) {
     config.prefix = newPrefix;
     // Now we have to save the file.
     fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
+}else
+if (message.content.startsWith(config.prefix + "mavatar")) {
+  //get User avatar
+  let user = message.mentions.users.first() || message.author;
+  console.log("mavatar");
+  console.log(user);
+  let embed = new Discord.RichEmbed()
+  embed.setImage(user.displayAvatarURL)
+  embed.setColor('#275BF0')
+  message.channel.send(embed)
 }
 
 
@@ -64,9 +97,7 @@ if (command === "asl") {
   }
 }
 
+
 });
-
-
-
 express()
   .listen(process.env.PORT || 5000, () => console.log(`Listening on ${ PORT }`))
