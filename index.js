@@ -17,9 +17,10 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 
-client.on("ready", () => {
-  console.log("I am ready!");
-
+client.on("ready", async () => {
+  console.log(`${client.user.username} is online!`);
+  //waifu Activity
+  client.user.setActivity("Husbando Games");
 });
 
 // Initialize Discord Bot
@@ -28,7 +29,7 @@ client.login(config.token);
 //const prefix = "!";
 
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
 
 /*
 show channel type
@@ -37,40 +38,45 @@ show channel name
 console.log(message.channel.name);
  */
 
+let messageArray = message.content.split(" ");
 
-if (!message.content.startsWith(config.prefix) || message.author.bot) return;
-if (message.content.startsWith(config.prefix + "ping")) {
-  message.channel.send("pong pong!");
-  console.log(message.channel.type);
+let cmd = messageArray[0];
+let arg1 = messageArray.slice(1);
+let prefix = config.prefix;
+
+if (!`${prefix}` || message.author.bot) return;
+if (cmd === `${prefix}ping`) {
+  message.channel.send("pong new!");
+ // console.log(message.channel.type);
 } else
-if (message.content.startsWith(config.prefix + "pretty")) {
+if (cmd === `${prefix}pretty`) {
   //send waifuBot Avatar
   message.channel.send(client.user.avatarURL);
 }else
-if (message.content.startsWith(config.prefix + "OwO")) {
+if (message.content.startsWith(prefix + "OwO")) {
   //send embedded messages
   message.channel.send({embed: {
     color: 3447003,
     description: "OwO!"
   }});
 }else
-if (message.content.startsWith(config.prefix + "avatar")) {
+if (cmd === `${prefix}avatar`) {
   //send own Avatar
   let embed = new Discord.RichEmbed()
   embed.setImage(message.author.avatarURL)
   embed.setColor('#275BF0')
   message.channel.send(embed)
 }
-if(message.content.startsWith(config.prefix + "prefix")) {
+if(message.content.startsWith(prefix + "prefix")) {
     // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
     console.log(newPrefix);
     // change the configuration in memory
-    config.prefix = newPrefix;
+    prefix = newPrefix;
     // Now we have to save the file.
     fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
 }else
-if (message.content.startsWith(config.prefix + "mavatar")) {
+if (cmd === `${prefix}mavatar`) {
   //get User avatar
   let user = message.mentions.users.first() || message.author;
   console.log("mavatar");
@@ -82,7 +88,7 @@ if (message.content.startsWith(config.prefix + "mavatar")) {
 }
 
 
-const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const command = args.shift().toLowerCase();
 
 if (command === "asl") {
