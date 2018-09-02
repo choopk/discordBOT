@@ -58,6 +58,7 @@ show channel type
 console.log(message.channel.type);
 show channel name
 console.log(message.channel.name);
+/ console.log(message.channel.type);
  */
 
 let messageArray = message.content.split(" ");
@@ -68,10 +69,6 @@ let prefix = config.prefix;
 let commandfile = bot.commands.get(cmd.slice(prefix.length));
 console.log(`command${commandfile}`);
 if(commandfile) commandfile.run(bot,message,arg1);
-
-
-
-
 
 });
 express()
