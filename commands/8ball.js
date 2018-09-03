@@ -2,9 +2,9 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
     if(!args[2]) return message.reply("Please ask a full question!");
-    let replies = ["Yes.", "No.","Lul ask somebody else", "Try harder pleb"];
+    let replies = ["Yes.", "No.","Lul ask somebody else", "Try harder pleb","Go away...","you are wrong","You lie", "You speak the truth","haahahaha no"];
     let result = Math.floor((Math.random()*replies.length))
-    let question = args.slice(1).join(" ");
+    let question = args.join(" ");
     let ballembed = new Discord.RichEmbed()
     .setAuthor(message.author.tag)
     .setColor("#FF9900")
