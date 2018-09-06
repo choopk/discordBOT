@@ -3,7 +3,7 @@ const fetch = require("snekfetch");
 
 
 module.exports.run = async (bot, message, args) => {
-if(args.length == 0){
+if(!Array.isArray(args) || !args.length){
     return  message.channel.send("Give me something to search!");
 }
     fetch.get(`http://api.urbandictionary.com/v0/define?term=${args}`).then(res => {
@@ -23,7 +23,7 @@ if(args.length == 0){
 
         message.channel.send(embed);
     });
- 
+
 }
 
  
