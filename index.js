@@ -12,24 +12,16 @@ fs.readdir("./commands/",(err, file)=> {
   if(err) console.log(err);
 
   let jsfile = file.filter(f => f.split(".").pop() === "js")
-  console.log( jsfile);
   if(jsfile.length <= 0){
     console.log("Couldn't find commands.");
     return;
   }
-
   jsfile.forEach((f, i) => {
-     console.log(`this file is ${f}`);
-     console.log(`index is ${i}`);
       let props = require(`./commands/${f}`);
-      console.log(`props${props}`);
-      console.log(`${f} loaded!`);
       bot.commands.set(props.help.name, props);
-    
+      console.log(bot.commands);
   });
 })
-
-
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -53,6 +45,22 @@ bot.login(config.token);
 
 bot.on("message", async (message) => {
 
+let messageArray = message.content.split(" ");
+let cmd = messageArray[0];
+let arg1 = messageArray.slice(1);
+let prefix = config.prefix;
+
+let commandfile = bot.commands.get(cmd.slice(prefix.length));
+   if(commandfile) commandfile.run(bot,message,arg1);
+  
+});
+
+
+express()
+  .listen(process.env.PORT || 5000, () => console.log(`Listening on ${ PORT }`))
+
+
+  
 /*
 show channel type
 console.log(message.channel.type);
@@ -60,16 +68,3 @@ show channel name
 console.log(message.channel.name);
 / console.log(message.channel.type);
  */
-
-let messageArray = message.content.split(" ");
-let cmd = messageArray[0];
-let arg1 = messageArray.slice(1);
-let prefix = config.prefix;
-
-let commandfile = bot.commands.get(cmd.slice(prefix.length));
-console.log(`command${commandfile}`);
-if(commandfile) commandfile.run(bot,message,arg1);
-
-});
-express()
-  .listen(process.env.PORT || 5000, () => console.log(`Listening on ${ PORT }`))
