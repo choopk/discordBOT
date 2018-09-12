@@ -98,37 +98,57 @@ module.exports.run = async (bot, message, args) => {
      .addField("Result","Nothing Found")
      message.channel.send(embed);
    } else{
-     console.log(filteredItem);
+  
     filteredItem.forEach(function(obj) {
      for(Key in  obj){
-        if(Key)
-        //console.log(filteredItem[Key]); 
-        console.log( obj[Key]);
-        var jsonstring = JSON.stringify( obj[Key]);
-        var jsonPretty = JSON.stringify(JSON.parse(jsonstring ),null,2);  
-        console.log( jsonPretty.length);
-        // message.channel.send(jsonPretty);
-        if(jsonPretty.length > 2000){
-         checklength(jsonPretty.length);
-        }else{
-           message.channel.send(jsonPretty);
-        }
-        function checklength(length)
-        {
-          let innerLength = length;
+        if(Key === "enemies"){
        
-          if(length>2000){
-            
-            message.channel.send(jsonPretty.substring(0,1999));
+        // console.log( obj[Key]);
+       obj[Key].forEach(function(objs) {
+      // console.log(Object.keys(objs));
+      let percentage = (objs.enemyModDropChance * objs.chance)/100;
+      objs.percentage = percentage;
+      //console.log(objs);
+      const allowed = [ 'enemyName','rarity', 'percentage' ];
+  
+ const filtered = Object.keys(objs)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = objs[key];
+        return obj;
+      }, {});
+         
+         console.log(filtered);
+         var jsonstring = JSON.stringify(filtered);
+         var jsonPretty = JSON.stringify(JSON.parse(jsonstring ),null,2);  
+
+         if(jsonPretty.length > 2000){
+          checklength(jsonPretty.length);
+         }else{
+            message.channel.send(jsonPretty);
+         }
+         function checklength(length)
+         {
+           let innerLength = length;
+        
+           if(length>2000){
+             
+             message.channel.send(jsonPretty.substring(0,1999));
+     
+             innerLength -= 1999;
+             if(innerLength > 0){
+               message.channel.send(jsonPretty.substring(innerLength,innerLength+1999));
+               checklength(innerLength);
+             }
+           }
+         }
+
+       });
+     
     
-            innerLength -= 1999;
-            if(innerLength > 0){
-              message.channel.send(jsonPretty.substring(innerLength,innerLength+1999));
-              checklength(innerLength);
-            }
-          }
-        }
       
+   
+      }
       }
     });
     
