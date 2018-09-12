@@ -34,7 +34,7 @@ bot.on("ready", async () => {
   console.log(`${bot.user.username} is online!`);
   //waifu Activity
  // bot.user.setActivity("Husbando Games");
-  bot.user.setActivity("boku no pico", {type:"WATCHING"});
+  bot.user.setActivity("with herself", {type:"PLAYING"});
 });
 
 // Initialize Discord Bot

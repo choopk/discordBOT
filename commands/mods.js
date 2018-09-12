@@ -69,17 +69,7 @@ function cleanArray(actual) {
   return newArray;
 }
 
-//console.log(getObjects(dropRate,'',"Orokin Cell"));
-
 module.exports.run = async (bot, message, args) => {
-
-    //let options =  { category: [ 'Misc' ] } ;
-   // const items = new Items();
-    
-  //  console.log(items);
-    //if(args )
-  //  console.log(dropRate.miscItems);
-  
    
    let Item = cleanArray(args).join(" ").toLowerCase()
    let filteredItem = getObjects(dropRate,'',Item);
@@ -144,28 +134,12 @@ module.exports.run = async (bot, message, args) => {
          }
 
        });
-     
-    
-      
-   
       }
       }
     });
     
-
    }
 
-
-   //console.log(Item);
-  
-  
-/*
-   const embed = new Discord.RichEmbed()
-   .setColor("#ff9900")
-   
-
-   message.channel.send(embed);
-   */
 }
 
  
