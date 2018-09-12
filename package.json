@@ -17,6 +17,8 @@
     "express": "^4.15.2",
     "snekfetch": "^4.0.4",
     "superagent": "^3.8.3",
+    "warframe-items": "^1.29.0",
+    "warframe-location-query": "0.0.3",
     "winston": "^3.0.0"
   },
   "devDependencies": {
